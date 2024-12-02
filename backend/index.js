@@ -54,5 +54,22 @@ app.use((err, req, res, next)=>{
     })
 })
 
-
+ 
 // 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
+
+
+// git init
+// git add .
+// git commit -m "message for commit"
+
+// then create repo and connect it by commands from github like:
+//1- git remote add origin https://github.com/annascodes/mern-auth.git
+//2- git branch - M main
+//3- git push - u origin main
+
+// remote authentication error:
+//1- go to account settings
+//2- then go to developer settings
+//3- create token copied the token
+//4- git remote set-url origin http://<created_token>@github...
+//5- git push - u origin main
