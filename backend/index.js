@@ -54,7 +54,7 @@ app.use((err, req, res, next)=>{
     })
 })
 
- 
+// powershell
 //----------instruction for newbies-------(or new comers)
 // git init
 // git add .
