@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Jost:ital,wght@0,100..900;1,100..900&family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Fredoka:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Fredoka:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Fredoka:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.Afacad{
+  font-family: "Afacad Flux", sans-serif;
+}
+.Poppins{
+    font-family: "Poppins", sans-serif;
+}
+.Roboto{
+  font-family: 'Roboto'; 
+
+}
+:root {
+  /* Roboto */
+  font-family: 'Fredoka'; 
+  /* font-family: "Poppins", sans-serif; */
+  /* font-weight: 700; */
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 40px;
+  aspect-ratio: 1;
+  color:'';
+  background: conic-gradient(currentColor 0 270deg, #0000 0);
+  border-radius: 50%;
+  animation: l14-0 4s infinite linear;
+}
+
+.loader::before {
+  content: "";
+  display: block;
+  height: 50%;
+  width: 50%;
+  border-top-left-radius: 100px;
+  background: currentColor;
+  animation: l14 0.5s infinite alternate;
+}
+
+@keyframes l14-0 {
+
+  0%,
+  24.99% {
+    transform: rotate(0deg)
+  }
+
+  25%,
+  49.99% {
+    transform: rotate(90deg)
+  }
+
+  50%,
+  74.99% {
+    transform: rotate(180deg)
+  }
+
+  75%,
+  100% {
+    transform: rotate(270deg)
+  }
+}
+
+@keyframes l14 {
+  100% {
+    transform: translate(-10px, -10px)
+  }
+}
+
+
+/* loader 2 */
+/* HTML: <div class="loader"></div> */
+.loader2 {
+  width: 40px;
+  height: 60px;
+  position: relative;
+}
+
+.loader2::before,
+.loader2::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #514b82;
+  clip-path: polygon(0 0, 100% 0, 100% 67%, 50% 67%, 50% 34%, 0 34%);
+  animation: sp7 2s infinite;
+}
+
+.loader2::after {
+  --s: -1, -1;
+}
+
+@keyframes sp7 {
+
+  0%,
+  10% {
+    transform: scale(var(--s, 1)) translate(0, 0) rotate(0deg)
+  }
+
+  33% {
+    transform: scale(var(--s, 1)) translate(0, -20px) rotate(0deg)
+  }
+
+  66% {
+    transform: scale(var(--s, 1)) translate(10px, -20px) rotate(-90deg)
+  }
+
+  90%,
+  100% {
+    transform: scale(var(--s, 1)) translate(10px, -10px) rotate(-90deg)
+  }
+}
+
+
+.todo{
+  background-color: rgb(93, 93, 255);
+  color:white
+  
+}
+.inprogress{
+  background-color: rgb(255, 242, 99);
+  color:white
+
+}
+.completed{
+  background-color: rgb(131, 255, 93);
+  color:white
+
+}
