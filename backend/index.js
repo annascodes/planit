@@ -55,9 +55,7 @@ app.use((err, req, res, next)=>{
 })
 
  
-// not making another push to dubble check 
-
-
+//----------instruction for newbies-------(or new comers)
 // git init
 // git add .
 // git commit -m "message for commit"
