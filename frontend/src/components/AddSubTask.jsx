@@ -37,7 +37,7 @@ const AddSubTask = ({task, setTask, id}) => {
         }
     }
 
-    console.log(task)
+    // console.log(task)
 
   return (
     <div>

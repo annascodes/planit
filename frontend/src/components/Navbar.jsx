@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AiOutlineNotification } from "react-icons/ai";
 import { logOut } from "../redux/user/userSlice";
 import { MdOutlineExpandCircleDown } from "react-icons/md";
+import useFetchAlone from "../hooks/useFetchAlone";
+import {setnotYetSeenTasks} from '../redux/user/userSlice'
+
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const {notYetSeenTasks} = useSelector((state)=>state.user)
   const dispatch = useDispatch()
+  const {fetchData, data, loading, err} = useFetchAlone()
+  const [notSeen, setNotSeen] = useState([])
+  
 
   const handleLogOut = async () => {
     try {
@@ -27,6 +34,22 @@ const Navbar = () => {
       console.log(error);
     }
   };
+
+  useEffect(()=>{
+    fetchData(`/api/task/getalltasks`)
+
+  },[])
+
+  useEffect(()=>{
+    let temp=[]
+    if(data){
+        temp= data.filter((t,ti)=>t.isSeen === false)
+    }
+    dispatch(setnotYetSeenTasks(temp))
+     
+    
+  },[data])
+  // console.log(notYetSeenTasks)
   return (
     <div className="px-2  flex flex-row justify-between items-center border-b border-black">
       <h1
@@ -39,7 +62,7 @@ const Navbar = () => {
         <Link className="flex">
           <AiOutlineNotification className="text-2xl" />{" "}
           <span className="border border-black  hover:bg-white hover:text-black duration-200 bg-black text-white rounded-full  px-2">
-            4
+            {notYetSeenTasks && notYetSeenTasks.length}
           </span>
         </Link>
         {/* <Link className='border rounded-3xl px-1'>{currentUser?.fullname}</Link> */}

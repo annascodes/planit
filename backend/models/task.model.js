@@ -46,6 +46,10 @@ const taskSchema = new mongoose.Schema({
     deadline: {
         type: String,
         default: new Date()
+    },
+    isSeen:{
+        type: Boolean,
+        default: false
     }
 
 

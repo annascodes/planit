@@ -2,8 +2,8 @@ import React from 'react'
 
 const TaskActivities = () => {
   return (
-    <div>
-      task Activities
+    <div className='bg-yellow-300 text-black p-3 rounded-lg'>
+      this feature is coming soon
     </div>
   )
 }

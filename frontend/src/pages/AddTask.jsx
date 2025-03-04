@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { SlCalender } from "react-icons/sl";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const AddTask = () => {
   const date = "2024-10-24T14:55:58.704Z";
@@ -20,6 +21,7 @@ const AddTask = () => {
   // console.log(moment(new Date(date)).fromNow())
   // console.log(moment(new Date(date)).format("Do MMM YYYY"));
   // console.log(moment(new Date(date)).format("LLLL"));
+  const navigate = useNavigate()
 
   const [startDate, setStartDate] = useState(new Date());
   const [task, setTask] = useState({
@@ -60,6 +62,8 @@ const AddTask = () => {
           priority: "normal",
           deadline: new Date(),
         });
+        navigate('/tasks')
+
       }
     } catch (error) {
       console.log(error)
@@ -140,7 +144,8 @@ setErr(null)
               HIGH
             </button>
           </div>
-          <label className="form-control w-full max-w-xs">
+
+          {/* <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text tracking-widest text-xs text-black font-semibold">
                 ATTACHMENTS
@@ -152,7 +157,9 @@ setErr(null)
                 add attachment
               </div>
             </div>
-          </label>
+          </label> */}
+
+
           {/* ---- deadline start  */}
           <div className=" mt-3">
             <div className="label">
@@ -191,7 +198,7 @@ setErr(null)
       </div>
       <button
         onClick={handlePublishTask}
-        className="btn btn-outline w-full mt-14 "
+        className="btn btn-outline w-full my-10"
       >
         Publish task
       </button>

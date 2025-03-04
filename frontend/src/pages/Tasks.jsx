@@ -7,9 +7,11 @@ import TasksListView from '../components/TasksListView';
 import LoadingPage from '../components/LoadingPage';
 import useFetch from '../utilities/useFetch';
 import TaskStatusBadges from '../components/TaskStatusBadges';
+import { useSelector } from 'react-redux';
 // import CreateTask from '../components/CreateTask';
 
 const Tasks = () => {
+  const {currentUser} = useSelector(state=>state.user)
   const [err, setErr] = useState(null)
   const [allTasks, setAllTasks] = useState([])
   const [view, setView] = useState('board')
@@ -28,7 +30,7 @@ const Tasks = () => {
           setErr(data.message);
         } else {
           setLoading(false)
-          console.log(data);
+          // console.log(data);
           setAllTasks(data)
           setErr(null);
         }
@@ -46,36 +48,15 @@ const Tasks = () => {
     <LoadingPage/>
   )
   return (
-    <div>
-      <div className="flex flex-row justify-between px-5">
+    <div className=' border-black p-5'>
+      <div className="flex flex-row justify-between ">
         <h1 className="text-3xl">Tasks</h1>
       </div>
 
       {taskStatsLoading && <div>Stats are loading</div>}
 
-      {/* {taskStats && (
-        <div className="flex flex-row justify-around ">
-          <h1 className="border-2 border-blue-400 text-blue-400 text-xl flex items-center gap-2  px-3">
-            <span className="text-xs tracking-widest uppercase text-black">
-              todo
-            </span>
-            {taskStats.todo}
-          </h1>
-          <h1 className="border-2 border-yellow-400 text-xl text-yellow-400 px-3 flex items-center gap-2">
-            <span className=" text-xs tracking-widest uppercase text-black">
-              inprogress
-            </span>
-            {taskStats.inprogress}
-          </h1>
-          <h1 className="border-2 border-green-400 text-xl text-green-400 px-3 flex items-center gap-2">
-            <span className=" text-xs tracking-widest uppercase text-black">
-              completed
-            </span>
-            {taskStats.completed}
-          </h1>
-        </div>
-      )} */}
-      {taskStats && (
+      
+      {(taskStats && currentUser.title ==='admin')  && (
         <div className='flex flex-row md:w-1/2 justify-between mx-auto border-0 border-black p-3 bg-zinc-100 rounded-xl'>
           <div className='flex items-center gap-1'>
             <TaskStatusBadges status={'todo'} fontsize={'xs'}/>
@@ -128,7 +109,7 @@ const Tasks = () => {
         </div>
       )}
       {view === "board" ? (
-        <div className="flex flex-row flex-wrap justify-around gap-y-9">
+        <div className="flex flex-row  flex-wrap justify-center gap-2 ">
           {allTasks.length > 0 &&
             allTasks.map((t, t_i) => {
               return <TaskCard key={t_i} task={t} />;

@@ -40,7 +40,7 @@ const AddNewUser = () => {
     }
   }, [generatedData]);
   return (
-    <div className="border-0 border-black md:w-1/2 mx-auto">
+    <div className="border-0 border-black md:w-1/2 mx-auto p-5">
       <div className="">
         <label className="form-control   w-full max-w-xs">
           <div className="label">

@@ -23,7 +23,7 @@ import { MdOutlinePriorityHigh } from "react-icons/md";
 import { HiOutlineExclamation } from "react-icons/hi";
 import TaskActivities from "../components/TaskActivities";
 import LoadingPage from "../components/LoadingPage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { MdArrowOutward } from "react-icons/md";
 import { GoArrowUpLeft } from "react-icons/go";
@@ -33,39 +33,29 @@ import useDeleteData from "../utilities/useDeleteData";
 import EditSubtaskModal from "../components/EditSubtaskModal";
 import EditTask from "../components/EditTask";
 import TaskPriority from "../components/TaskPriority";
+import usePost from "../hooks/usePost";
+import useFetch from "../utilities/useFetch";
+
+import { setnotYetSeenTasks } from "../redux/user/userSlice";
+import useFetchAlone from "../hooks/useFetchAlone";
+
+
 
 
 
 const TaskDetail = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const priorityIcons = {
-    normal: (
-      <span className="flex flex-row gap-1 items-center justify-center  text-blue-600 bg-blue-200 rounded-md px-1">
-        <RxDash />
-        NORMAL
-      </span>
-    ),
-
-    medium: (
-      <span className="flex flex-row gap-1 items-center justify-center text-yellow-600  bg-yellow-200 rounded-md px-1">
-        <MdOutlineKeyboardArrowUp />
-        MEDIUM
-      </span>
-    ),
-
-    high: (
-      <span className="flex flex-row gap-1 items-center justify-center  text-red-600 bg-red-200 rounded-md px-1">
-        <MdOutlineKeyboardDoubleArrowUp />
-        HIGH
-      </span>
-    ),
-  };
+  const dispatch = useDispatch()
+  const { notYetSeenTasks } = useSelector(state => state.user)
+  const { fetchData, data: fetchTasksAgainData, loading: FTALoading, err: FTAErr } = useFetchAlone()
 
   const { id } = useParams();
   const [err, setErr] = useState(null);
   const [task, setTask] = useState(null);
   const [tab, setTab] = useState("details");
   const [loading, setLoading] = useState(false);
+
+  const { post, data: isSeenData, loading: isSeenLoading, err: isSeenErr } = usePost()
 
   const {
     deletedata,
@@ -114,23 +104,55 @@ const TaskDetail = () => {
       let tempSubtasks = task.subtasks.filter((t) => t._id !== delSubtaskId);
       console.log(tempSubtasks)
 
-      setTask({...task, subtasks: tempSubtasks });
+      setTask({ ...task, subtasks: tempSubtasks });
     }
   }, [data]);
   // console.log(task);
+
+  useEffect(() => {
+    if (task && task.isSeen === false) {
+      console.log('make this task seen')
+      post({
+        url: `/api/task/updateisseen/${task._id}`,
+        formData: {
+          isSeen: true,
+        }
+      })
+    }
+
+  }, [task])
+
+  useEffect(() => {
+    if (isSeenData) {
+      fetchData('/api/task/getalltasks')
+    }
+
+  }, [isSeenData])
+  useEffect(() => {
+
+    let temp = []
+    if (fetchTasksAgainData) {
+      temp = fetchTasksAgainData.filter((t, ti) => t.isSeen === false)
+      dispatch(setnotYetSeenTasks(temp))
+
+    }
+
+
+
+  }, [fetchTasksAgainData])
+
   if (loading) return <LoadingPage />;
 
   return (
     <div className="bg-white p-5 rounded-2xl">
       <div className={`flex flex-row items-center gap-2 `}>
-        <EditTask/>
+        <EditTask />
         <h1>
           <TaskStatusBadges status={task?.status} fontsize={"md"} />
         </h1>
         <h1
-          className={`Roboto font-extrabold tracking-wide text-md md:text-3xl ${
-            task?.status === "completed" && "line-through"
-          }`}
+          className={`Roboto font-extrabold tracking-wide text-md md:text-3xl ${task?.status === "completed" && "line-through"
+            }`}
         >
           {task?.title}
         </h1>
@@ -141,9 +163,8 @@ const TaskDetail = () => {
           onClick={() => {
             setTab("details");
           }}
-          className={`flex flex-row gap-1 items-center p-2 text-lg    bg-gray-100 px-1 rounded-t-2xl  duration-100  ${
-            tab === "details" && "text-black border-b-4 border-black"
-          }`}
+          className={`flex flex-row gap-1 items-center p-2 text-lg    bg-gray-100 px-1 rounded-t-2xl  duration-100  ${tab === "details" && "text-black border-b-4 border-black"
+            }`}
         >
           <BiDetail className="text-2xl" />
 
@@ -153,9 +174,8 @@ const TaskDetail = () => {
           onClick={() => {
             setTab("activities");
           }}
-          className={`flex flex-row gap-1 items-center p-2 text-lg   bg-gray-100 px-1 rounded-t-2xl   duration-100  ${
-            tab === "activities" && "text-black border-b-4 border-black"
-          }`}
+          className={`flex flex-row gap-1 items-center p-2 text-lg   bg-gray-100 px-1 rounded-t-2xl   duration-100  ${tab === "activities" && "text-black border-b-4 border-black"
+            }`}
         >
           <CgMenuGridO className="text-2xl" />
           <span className="text-xs tracking-widest">ACTIVITIES</span>
@@ -218,11 +238,10 @@ const TaskDetail = () => {
                 DEADLINE
               </div>
               <div
-                className={`w-1/2 ${
-                  moment(task?.deadline).fromNow().toString().includes("ago")
+                className={`w-1/2 ${moment(task?.deadline).fromNow().toString().includes("ago")
                     ? "text-red-500"
                     : "text-blue-500"
-                } `}
+                  } `}
               >
                 {moment(task?.deadline).format("Do MMM YYYY")}
                 <span className="text-xs mx-2 ">
@@ -254,7 +273,7 @@ const TaskDetail = () => {
                     className="h-7 w-7 "
                   />
                   <span>@{task.assignedToUser.username}</span>
-                  <span>|{task.assignedToUser.title}</span>
+                  <span>| {task.assignedToUser.title}</span>
                 </Link>
               </div>
             )}
@@ -296,22 +315,22 @@ const TaskDetail = () => {
             )}
           </div>
 
-          <div className="flex flex-row items-center gap-5">
+          {/* <div disabled={true}  className="flex flex-row items-center gap-5 cursor-not-allowed ">
             <h1 className="text-xs tracking-widest flex flex-row items-center gap-1">
               <GrAttachment className="text-lg" />
               ATTACHMENTS
             </h1>
 
-            <div className="border-0 border-gray-600 flex flex-row gap-5  px-2">
+            <div disabled={true} className="border-0  border-gray-600 flex flex-row gap-5  px-2">
               <a
-                className="text-blue-500 underline underline-offset-4 hover:scale-110 duration-300"
+                className="disabled:cursor-not-allowed text-blue-500 underline underline-offset-4 hover:scale-110 duration-300"
                 href="https://ihatetomatoes.net/wp-content/uploads/2017/01/react-cheat-sheet.pdf"
                 target="_blank"
               >
                 Attachment 1{" "}
               </a>
             </div>
-          </div>
+          </div> */}
 
           <div className="my-8">
             <div className="flex flex-row items-center justify-between">
@@ -342,9 +361,8 @@ const TaskDetail = () => {
                           />
                         </h1>
                         <h1
-                          className={`${
-                            t.status === "completed" && "line-through"
-                          }`}
+                          className={`${t.status === "completed" && "line-through"
+                            }`}
                         >
                           {t.title}
                         </h1>
@@ -355,9 +373,8 @@ const TaskDetail = () => {
                           <div className="text-blue-400">
                             <span className="text-xs text-black mx-1">by</span>
                             <Link
-                              to={`/profile/${
-                                t.createdBy?.username || currentUser.username
-                              }`}
+                              to={`/profile/${t.createdBy?.username || currentUser.username
+                                }`}
                               className="hover:underline underline-offset-4"
                             >
                               @{t.createdBy?.username}

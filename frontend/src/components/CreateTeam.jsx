@@ -111,7 +111,7 @@ const CreateTeam = ({task,setTask}) => {
      });
    }, [selectedTeam, individualOne]);
 
-   console.log(selectedTeam)
+  //  console.log(selectedTeam)
   return (
     <div className="">
       {}

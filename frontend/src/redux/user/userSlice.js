@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    currentUser: null
+    currentUser: null,
+    notYetSeenTasks:[]
 }
 
 const userSlice = createSlice(
@@ -14,10 +15,13 @@ const userSlice = createSlice(
             },
             logOut:(state)=>{
                 state.currentUser=null;
+            },
+            setnotYetSeenTasks:(state, action)=>{
+                state.notYetSeenTasks=action.payload;
             }
         }
     }
 
 )
-export const {signInOk, logOut}  = userSlice.actions;
+export const {signInOk, logOut, setnotYetSeenTasks}  = userSlice.actions;
 export default userSlice.reducer;

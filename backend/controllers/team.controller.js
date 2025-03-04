@@ -17,7 +17,7 @@ export const createTeam = async(req, res, next)=>{
             [
                 {
                     path: 'team',
-                    select: ['username', 'fullname']
+                    select: ['username', 'fullname','title']
                 }
             ]
         )

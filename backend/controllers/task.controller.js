@@ -300,3 +300,18 @@ export const updateSubtask = async(req, res, next)=>{
     }
 
 }
+
+export const updateIsSeen = async(req, res, next)=>{
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id,{
+            $set:{
+                isSeen: true
+            }
+        },{new:true})
+        
+        res.status(200).json({msg:'task isSeen is updated: ', updatedTask: task})
+        
+    } catch (error) {
+        next(error)
+    }
+}

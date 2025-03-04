@@ -10,9 +10,14 @@ import { AiOutlinePieChart } from "react-icons/ai";
 import { PiUsersFourLight } from "react-icons/pi";
 import { FiUserPlus } from "react-icons/fi";
 import { LuUserPlus2 } from "react-icons/lu";
+import { MdOutlineAddBox } from "react-icons/md";
+import { FaUsersRectangle } from "react-icons/fa6";
+
 
 import { RiFunctionAddLine } from "react-icons/ri";
 import { useSelector } from "react-redux";
+import BottomBar from "./BottomBar";
+import { SlBadge } from "react-icons/sl";
 const Sidebar = () => {
   const {currentUser} = useSelector(state=>state.user)
   const [tab, setTab] = useState(null);
@@ -29,7 +34,7 @@ const Sidebar = () => {
           <AiOutlinePieChart className="text-xl" />
           Home
         </Link>
-        <Link
+        {/* <Link
           onClick={() => setTab("overview")}
           to={"/overview"}
           className={` hover:pl-2   duration-300 flex flex-row items-center   gap-2 ${
@@ -38,7 +43,7 @@ const Sidebar = () => {
         >
           <HiOutlineViewColumns />
           Overview
-        </Link>
+        </Link> */}
         <Link
           onClick={() => setTab("tasks")}
           to={"/tasks"}
@@ -49,7 +54,7 @@ const Sidebar = () => {
           <GrTask />
           Tasks
         </Link>
-        <Link
+        {/* <Link
           onClick={() => setTab("completed")}
           to={"/completed"}
           className={` hover:pl-2   duration-300 flex flex-row items-center   gap-2 ${
@@ -58,10 +63,20 @@ const Sidebar = () => {
         >
           <IoMdCheckmarkCircleOutline />
           Completed
-        </Link>
+        </Link> */}
 
         {currentUser && currentUser.title === "admin" && (
           <>
+            <Link
+              onClick={() => setTab("createTeam")}
+              to={"/teams"}
+              className={` hover:pl-2   duration-300 flex flex-row items-center   gap-2 ${
+                tab === "createTeam" && "bg-zinc-800 text-white rounded-md p-1"
+              }`}
+            >
+              <FaUsersRectangle />
+               Team
+            </Link>
             <Link
               onClick={() => setTab("users")}
               to={"/allusers"}
@@ -100,9 +115,23 @@ const Sidebar = () => {
               </span>{" "}
               Task
             </Link>
+
+            <Link
+              onClick={() => setTab("designations")}
+              to={"/roles"}
+              className={` hover:pl-2   duration-300 flex flex-row items-center   gap-2 ${
+                tab === "designations" && "bg-zinc-800 text-white rounded-md p-1"
+              }`}
+            >
+              <SlBadge />
+             
+              Roles
+            </Link>
           </>
         )}
       </div>
+
+      
     </div>
   );
 };

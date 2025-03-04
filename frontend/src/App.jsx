@@ -3,7 +3,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { useSelector } from "react-redux";
-import Sidebar from "./components/Sidebar"; 
+import Sidebar from "./components/Sidebar";
 import Overview from "./pages/Overview";
 import Tasks from "./pages/Tasks";
 import Navbar from "./components/Navbar";
@@ -15,26 +15,42 @@ import Users from "./pages/Users";
 import UserProfile from "./pages/UserProfile";
 import AllUsers from "./pages/AllUsers";
 import AddNewUser from "./pages/AddNewUser";
+import CreateTeam from "./pages/CreateTeamPage";
+import Team from "./pages/Teams";
+import BottomBar from "./components/BottomBar";
+import AddDesignation from "./pages/Designations";
+import Roles from "./pages/Roles";
 
 
 
 
 function App() {
-  const {currentUser} = useSelector(state=>state.user)
-// console.log(currentUser)
+  const { currentUser } = useSelector(state => state.user)
+  // console.log(currentUser)
   return (
     <div>
       <BrowserRouter>
+        <nav className="fixed top-0 w-full bg-white shadow-md  z-50 p-3">
+          {/* Navbar content here */}
         <Navbar />
-        <div className="flex flex-row">
+
+        </nav>
+
+        <div className="flex flex-row mt-20">
           {currentUser && (
-            <div className="hidden md:block  w-2/12">
+            <div
+
+              // className="hidden md:block  w-2/12"
+              className=" hidden md:block   w-2/12"
+            >
               <Sidebar />
+
             </div>
           )}
 
           <div
-            className={`${currentUser ? ' md:w-10/12': "w-full" } w-full border-l-0 border-black p-3 min-h-screen`}
+            // className={`${currentUser ? ' md:w-10/12' : "w-full"}  border-l-0 border-black p-3 min-h-screen`}
+            className={`w-full md:w-10/12   border-black  min-h-screen mb-12`}
           >
             <Routes>
               <Route
@@ -85,9 +101,32 @@ function App() {
                   (currentUser && currentUser.title === 'admin') ? <AddNewUser /> : <Navigate to={"/login"} />
                 }
               />
+              <Route
+                path="/createteam"
+                element={
+                  (currentUser && currentUser.title === 'admin') ? <CreateTeam /> : <Navigate to={"/login"} />
+                }
+              />
+              <Route
+                path="/teams"
+                element={
+                  (currentUser && currentUser.title === 'admin') ? <Team /> : <Navigate to={"/login"} />
+                }
+              />
+              <Route
+                path="/roles"
+                element={
+                  (currentUser && currentUser.title === 'admin') ? <Roles /> : <Navigate to={"/login"} />
+                }
+              />
             </Routes>
           </div>
         </div>
+
+        {/* ---on small screen ---  */}
+
+        <BottomBar />
+
         <Toaster />
       </BrowserRouter>
     </div>
